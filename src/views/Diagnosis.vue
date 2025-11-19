@@ -4,7 +4,7 @@
       <h1 class="page-title">脉诊与舌诊训练库</h1>
       <div class="content">
         <a-card title="诊断训练" :bordered="false" class="content-card">
-          <a-row gutter={16}>
+          <a-row :gutter="16">
             <a-col span={12}>
               <a-card hoverable class="training-card pulse-card">
                   <a-icon type="sound" :style="{ fontSize: '48px', color: '#faad14', marginBottom: '20px' }" />

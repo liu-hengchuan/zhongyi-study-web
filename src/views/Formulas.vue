@@ -24,7 +24,7 @@
         </a-card>
 
         <a-card title="特色功能" :bordered="false" class="content-card">
-          <a-row gutter={16}>
+          <a-row :gutter="16">
             <a-col span={12}>
               <div class="feature-item">
                 <a-icon type="bar-chart" :style="{ fontSize: '32px', color: '#1890ff', marginBottom: '10px' }" />
@@ -77,7 +77,8 @@ export default {
     async loadPrescriptions() {
       try {
         const response = await getAllPrescriptions()
-        this.prescriptions = response.data
+        console.log('方剂数据:', response)
+        this.prescriptions = response
       } catch (error) {
         console.error('加载方剂失败:', error)
       }
