@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Diagnosis from '../views/Diagnosis.vue'
 
 Vue.use(VueRouter)
 
@@ -25,11 +26,7 @@ const routes = [
     name: 'Formulas',
     component: () => import('../views/Formulas.vue')
   },
-  {
-    path: '/diagnosis',
-    name: 'Diagnosis',
-    component: () => import('../views/Diagnosis.vue')
-  },
+  { path: '/diagnosis', name: 'Diagnosis', component: Diagnosis },
   {
     path: '/acupuncture',
     name: 'Acupuncture',
