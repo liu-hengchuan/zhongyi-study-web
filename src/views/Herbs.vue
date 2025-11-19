@@ -5,43 +5,18 @@
       <div class="content">
         <a-card title="常用中药" :bordered="false" class="content-card">
           <div class="herb-list">
-            <a-card hoverable class="herb-card">
+            <a-card
+              v-for="herb in herbs"
+              :key="herb.id"
+              hoverable
+              class="herb-card"
+            >
               <a-card-meta
-                title="桂枝"
-                description="性温，味辛甘；归心、肺、膀胱经。发汗解肌，温通经脉，助阳化气。"
+                :title="herb.name"
+                :description="`${herb.property}，味${herb.channel}；归${herb.channel}经。${herb.function}`"
               >
                 <template #avatar>
                   <a-icon type="medicine-box" :style="{ fontSize: '48px', color: '#faad14' }" />
-                </template>
-              </a-card-meta>
-            </a-card>
-            <a-card hoverable class="herb-card">
-              <a-card-meta
-                title="芍药"
-                description="性微寒，味苦酸；归肝、脾经。养血调经，敛阴止汗，柔肝止痛，平抑肝阳。"
-              >
-                <template #avatar>
-                  <a-icon type="medicine-box" :style="{ fontSize: '48px', color: '#52c41a' }" />
-                </template>
-              </a-card-meta>
-            </a-card>
-            <a-card hoverable class="herb-card">
-              <a-card-meta
-                title="甘草"
-                description="性平，味甘；归心、肺、脾、胃经。补脾益气，清热解毒，祛痰止咳，缓急止痛，调和诸药。"
-              >
-                <template #avatar>
-                  <a-icon type="medicine-box" :style="{ fontSize: '48px', color: '#1890ff' }" />
-                </template>
-              </a-card-meta>
-            </a-card>
-            <a-card hoverable class="herb-card">
-              <a-card-meta
-                title="柴胡"
-                description="性微寒，味苦辛；归肝、胆经。疏散退热，疏肝解郁，升举阳气。"
-              >
-                <template #avatar>
-                  <a-icon type="medicine-box" :style="{ fontSize: '48px', color: '#722ed1' }" />
                 </template>
               </a-card-meta>
             </a-card>
@@ -78,8 +53,27 @@
 </template>
 
 <script>
+import { getAllMedicines } from '../api/medicine'
+
 export default {
-  name: 'Herbs'
+  name: 'Herbs',
+  data() {
+    return {
+      herbs: []
+    }
+  },
+  mounted() {
+    this.loadHerbs()
+  },
+  methods: {
+    loadHerbs() {
+      getAllMedicines().then(res => {
+        this.herbs = res
+      }).catch(err => {
+        console.error('Failed to load herbs:', err)
+      })
+    }
+  }
 }
 </script>
 

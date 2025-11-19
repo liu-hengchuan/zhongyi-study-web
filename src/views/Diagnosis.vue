@@ -30,16 +30,8 @@
 
         <a-card title="常见诊断" :bordered="false" class="content-card">
           <div class="diagnosis-list">
-            <a-tag color="blue">弦脉</a-tag>
-            <a-tag color="green">滑脉</a-tag>
-            <a-tag color="orange">浮脉</a-tag>
-            <a-tag color="red">沉脉</a-tag>
-            <a-tag color="purple">虚脉</a-tag>
-            <a-tag color="cyan">实脉</a-tag>
-            <a-tag color="magenta">舌红苔薄</a-tag>
-            <a-tag color="yellow">舌淡苔白</a-tag>
-            <a-tag color="teal">舌红苔黄</a-tag>
-            <a-tag color="gray">舌暗苔腻</a-tag>
+            <a-tag v-for="pulse in pulses" :key="pulse.id" color="blue">{{ pulse.name }}</a-tag>
+            <a-tag v-for="tongue in tongues" :key="tongue.id" color="green">{{ tongue.tongueColor + tongue.tongueCoating }}</a-tag>
           </div>
         </a-card>
       </div>
@@ -48,8 +40,39 @@
 </template>
 
 <script>
+import { getAllPulseDiagnosis } from '../api/pulse'
+import { getAllTongueDiagnosis } from '../api/tongue'
+
 export default {
-  name: 'Diagnosis'
+  name: 'Diagnosis',
+  data() {
+    return {
+      pulses: [],
+      tongues: []
+    }
+  },
+  mounted() {
+    this.loadPulses()
+    this.loadTongues()
+  },
+  methods: {
+    async loadPulses() {
+      try {
+        const response = await getAllPulseDiagnosis()
+        this.pulses = response.data
+      } catch (error) {
+        console.error('加载脉象失败:', error)
+      }
+    },
+    async loadTongues() {
+      try {
+        const response = await getAllTongueDiagnosis()
+        this.tongues = response.data
+      } catch (error) {
+        console.error('加载舌诊记录失败:', error)
+      }
+    }
+  }
 }
 </script>
 

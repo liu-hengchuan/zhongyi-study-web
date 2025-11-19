@@ -5,43 +5,18 @@
       <div class="content">
         <a-card title="经典原文库" :bordered="false" class="content-card">
           <div class="book-list">
-            <a-card hoverable class="book-card">
+            <a-card
+              v-for="book in books"
+              :key="book.id"
+              hoverable
+              class="book-card"
+            >
               <a-card-meta
-                title="《黄帝内经》"
-                description="中医理论奠基之作，分《素问》和《灵枢》两部分"
+                :title="book.name"
+                :description="book.intro"
               >
                 <template #avatar>
                   <a-icon type="book" :style="{ fontSize: '48px', color: '#1890ff' }" />
-                </template>
-              </a-card-meta>
-            </a-card>
-            <a-card hoverable class="book-card">
-              <a-card-meta
-                title="《伤寒论》"
-                description="张仲景所著，经方学派核心典籍，论述外感热病治法"
-              >
-                <template #avatar>
-                  <a-icon type="book" :style="{ fontSize: '48px', color: '#52c41a' }" />
-                </template>
-              </a-card-meta>
-            </a-card>
-            <a-card hoverable class="book-card">
-              <a-card-meta
-                title="《金匮要略》"
-                description="张仲景所著，论述杂病辨证论治，与《伤寒论》合称《伤寒杂病论》"
-              >
-                <template #avatar>
-                  <a-icon type="book" :style="{ fontSize: '48px', color: '#fa8c16' }" />
-                </template>
-              </a-card-meta>
-            </a-card>
-            <a-card hoverable class="book-card">
-              <a-card-meta
-                title="《温病条辨》"
-                description="吴鞠通所著，温病学派代表著作，建立温病三焦辨证体系"
-              >
-                <template #avatar>
-                  <a-icon type="book" :style="{ fontSize: '48px', color: '#722ed1' }" />
                 </template>
               </a-card-meta>
             </a-card>
@@ -64,8 +39,27 @@
 </template>
 
 <script>
+import { getAllClassicBooks } from '../api/classics'
+
 export default {
-  name: 'Classics'
+  name: 'Classics',
+  data() {
+    return {
+      books: []
+    }
+  },
+  mounted() {
+    this.loadBooks()
+  },
+  methods: {
+    loadBooks() {
+      getAllClassicBooks().then(res => {
+        this.books = res
+      }).catch(err => {
+        console.error('Failed to load books:', err)
+      })
+    }
+  }
 }
 </script>
 
