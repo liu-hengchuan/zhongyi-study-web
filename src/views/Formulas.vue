@@ -5,43 +5,18 @@
       <div class="content">
         <a-card title="核心方剂" :bordered="false" class="content-card">
           <div class="formula-list">
-            <a-card hoverable class="formula-card">
+            <a-card
+              v-for="prescription in prescriptions"
+              :key="prescription.id"
+              hoverable
+              class="formula-card"
+            >
               <a-card-meta
-                title="桂枝汤"
-                description="组成：桂枝、芍药、生姜、大枣、甘草。功用：解肌发表，调和营卫。"
+                :title="prescription.name"
+                :description="`组成：${prescription.composition || '未记载'}。功用：${prescription.function || '未记载'}。`"
               >
                 <template #avatar>
                   <a-icon type="book" :style="{ fontSize: '48px', color: '#faad14' }" />
-                </template>
-              </a-card-meta>
-            </a-card>
-            <a-card hoverable class="formula-card">
-              <a-card-meta
-                title="小柴胡汤"
-                description="组成：柴胡、黄芩、人参、半夏、生姜、大枣、甘草。功用：和解少阳。"
-              >
-                <template #avatar>
-                  <a-icon type="book" :style="{ fontSize: '48px', color: '#52c41a' }" />
-                </template>
-              </a-card-meta>
-            </a-card>
-            <a-card hoverable class="formula-card">
-              <a-card-meta
-                title="麻黄汤"
-                description="组成：麻黄、桂枝、杏仁、甘草。功用：发汗解表，宣肺平喘。"
-              >
-                <template #avatar>
-                  <a-icon type="book" :style="{ fontSize: '48px', color: '#1890ff' }" />
-                </template>
-              </a-card-meta>
-            </a-card>
-            <a-card hoverable class="formula-card">
-              <a-card-meta
-                title="四逆汤"
-                description="组成：附子、干姜、甘草。功用：回阳救逆。"
-              >
-                <template #avatar>
-                  <a-icon type="book" :style="{ fontSize: '48px', color: '#722ed1' }" />
                 </template>
               </a-card-meta>
             </a-card>
@@ -86,8 +61,28 @@
 </template>
 
 <script>
+import { getAllPrescriptions } from '../api/formula'
+
 export default {
-  name: 'Formulas'
+  name: 'Formulas',
+  data() {
+    return {
+      prescriptions: []
+    }
+  },
+  mounted() {
+    this.loadPrescriptions()
+  },
+  methods: {
+    async loadPrescriptions() {
+      try {
+        const response = await getAllPrescriptions()
+        this.prescriptions = response.data
+      } catch (error) {
+        console.error('加载方剂失败:', error)
+      }
+    }
+  }
 }
 </script>
 
